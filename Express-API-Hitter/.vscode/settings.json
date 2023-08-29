@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "http-sonarqube-rolustech-com",
+        "projectKey": "org.rt.panavid_live_webserver"
+    }
+}
