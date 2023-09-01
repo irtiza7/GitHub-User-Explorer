@@ -60,7 +60,6 @@ const handleGetGithubUsersDetailsRequest = async function (req, res) {
     let userDetailsAndRepos = await fetchUserDetailsAndReposFromDB(login)
 
     if (!userDetailsAndRepos) {
-      console.log('Data not found in DB')
       /*
         If no record was found in Database,
         Get User Details and Repos from Github API 

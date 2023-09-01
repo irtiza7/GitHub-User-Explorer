@@ -69,7 +69,7 @@ const fetchUserDetailsAndReposFromDB = async function (userLogin) {
     ])
 
     if (userDetailsResponse && userReposResponse) {
-      const userDetailsAndRepos = mergeUserDetailsAndRepos(userDetailsResponse, userReposResponse)
+      const userDetailsAndRepos = mergeUserDetailsAndRepos(userDetailsResponse.dataValues, userReposResponse)
       return userDetailsAndRepos
     } else {
       return null
