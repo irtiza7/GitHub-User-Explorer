@@ -15,7 +15,7 @@ BE Request URL: https://api.github.com/users/{login}/followers
 Router.get('/api/github/followers', Controllers.handleGetGithubUserFollowersRequest)
 
 /*
-FE Request URL: http://localhost:4300//api/github/users/details?login={}
+FE Request URL: http://localhost:4300//api/github/user/details?login={}
 BE Request URL: https://api.github.com/users/{login}
 */
 Router.get('/api/github/user/details', Controllers.handleGetGithubUsersDetailsRequest)

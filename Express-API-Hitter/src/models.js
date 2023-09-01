@@ -1,63 +1,84 @@
-const { DataTypes, Model } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('./db-connection')
 
-const UsersModel = sequelize.define(
-  'User',
+const UserDetailsModel = sequelize.define(
+  'user_details',
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true
     },
     login: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      type: DataTypes.STRING
+      // allowNull: false
     },
     avatar_url: {
-      type: DataTypes.STRING,
-      allowNull: true
+      type: DataTypes.STRING
+      // allowNull: false
     },
-    following: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+    html_url: {
+      type: DataTypes.STRING
+      // allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING
+      // allowNull: false
+    },
+    company: {
+      type: DataTypes.STRING
+      // allowNull: true
+    },
+    location: {
+      type: DataTypes.STRING
+      // allowNull: true
+    },
+    email: {
+      type: DataTypes.STRING
+      // allowNull: true
+    },
+    bio: {
+      type: DataTypes.TEXT
+      // allowNull: true
     },
     followers: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+      type: DataTypes.INTEGER
+      // allowNull: false
     },
-    repos_url: {
-      type: DataTypes.STRING,
-      allowNull: true
+    following: {
+      type: DataTypes.INTEGER
+      // allowNull: false
+    },
+    public_repos: {
+      type: DataTypes.INTEGER
+      // allowNull: false
     }
   },
   {
-    tableName: 'Users',
-    timestamps: false
+    timestamps: false,
+    tableName: 'UserDetails'
   }
 )
 
 const ReposModel = sequelize.define(
-  'Repo',
+  'repos',
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    full_name: {
+    html_url: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    private: {
-      type: DataTypes.BOOLEAN,
+    description: {
+      type: DataTypes.TEXT,
       allowNull: true
     },
-    url: {
+    owner: {
       type: DataTypes.STRING,
       allowNull: false
     }
@@ -67,11 +88,6 @@ const ReposModel = sequelize.define(
     timestamps: false
   }
 )
-
-UsersModel.hasMany(ReposModel, {
-  foreignKey: 'id'
-})
-ReposModel.belongsTo(UsersModel)
 
 authenticateConnection()
   .then(() => {
@@ -98,7 +114,6 @@ async function syncSequelize() {
 }
 
 module.exports = {
-  UsersModel,
-  ReposModel,
-  sequelize
+  UserDetailsModel,
+  ReposModel
 }

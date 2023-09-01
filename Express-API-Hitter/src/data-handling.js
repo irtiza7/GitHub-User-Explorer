@@ -1,4 +1,13 @@
-// const { UsersModel, ReposModel, sequelize } = require('./models')
+const axios = require('axios')
+const { UserDetailsModel, ReposModel } = require('./models')
+const CONSTANTS = require('../constants')
+
+const headers = {
+  /*
+  Auth Token for GitHub API
+  */
+  Authorization: `token ${process.env.PERSONAL_AUTH_TOKEN_FOR_GITHUB_API}`
+}
 
 const extractUserFields = function (response) {
   const users = response.data.items
@@ -34,28 +43,62 @@ const mergeUserDetailsAndRepos = function (userDetails, userRepos) {
   return { ...userDetails, repos: userRepos }
 }
 
-const saveUsersInDB = async function (users) {
+const fetchUserDetailsAndReposFromGithub = async function (userLogin) {
+  const userDetailsURL = `${CONSTANTS.githubBaseURL}/users/${userLogin}`
+  const userReposURL = `${CONSTANTS.githubBaseURL}/users/${userLogin}/repos`
+
   try {
-    await UsersModel.bulkCreate(users)
+    const [userDetailsResponse, userReposResponse] = await Promise.all([axios.get(userDetailsURL, { headers }), axios.get(userReposURL, { headers })])
+
+    const formattedUsersDetails = extractUserDetailsFields(userDetailsResponse)
+    const formattedUserRepos = extractRepoFields(userReposResponse)
+    const userDetailsAndRepos = mergeUserDetailsAndRepos(formattedUsersDetails, formattedUserRepos)
+
+    saveUserDetailsAndReposInDB(formattedUsersDetails, formattedUserRepos)
+    return userDetailsAndRepos
   } catch (error) {
-    console.error(`ERROR in saveUsersInDB: ${error}`)
+    throw new Error(`ERROR IN fetchUserDetailsAndReposFromGithub: ${error}`)
   }
 }
 
-const saveReposInDB = async function (repos) {
+const fetchUserDetailsAndReposFromDB = async function (userLogin) {
   try {
-    await ReposModel.bulkCreate(repos)
+    const [userDetailsResponse, userReposResponse] = await Promise.all([
+      UserDetailsModel.findOne({ where: { login: userLogin } }),
+      ReposModel.findAll({ where: { owner: userLogin } })
+    ])
+
+    if (userDetailsResponse && userReposResponse) {
+      const userDetailsAndRepos = mergeUserDetailsAndRepos(userDetailsResponse, userReposResponse)
+      return userDetailsAndRepos
+    } else {
+      return null
+    }
   } catch (error) {
-    console.error(`ERROR in saveReposInDB: ${error}`)
+    throw new Error(`ERROR IN fetchUserDetailsAndReposFromDB: ${error}`)
+  }
+}
+
+const saveUserDetailsAndReposInDB = async function (userDetails, userRepos) {
+  try {
+    await UserDetailsModel.create(userDetails, { ignoreDuplicates: true })
+  } catch (error) {
+    console.error(`ERROR in saveUserDetailsAndReposInDB - UserModel: ${error}`)
+  }
+  try {
+    const owner = userDetails.login
+    userRepos = userRepos.map((repo) => {
+      return { ...repo, owner }
+    })
+    await ReposModel.bulkCreate(userRepos, { ignoreDuplicates: true })
+  } catch (error) {
+    console.error(`ERROR in saveUserDetailsAndReposInDB - ReposModel: ${error}`)
   }
 }
 
 module.exports = {
   extractUserFields,
   extractFollowerFields,
-  extractRepoFields,
-  extractUserDetailsFields,
-  mergeUserDetailsAndRepos,
-  saveUsersInDB,
-  saveReposInDB
+  fetchUserDetailsAndReposFromDB,
+  fetchUserDetailsAndReposFromGithub
 }
