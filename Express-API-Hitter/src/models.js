@@ -9,48 +9,48 @@ const UserDetailsModel = sequelize.define(
       primaryKey: true
     },
     login: {
-      type: DataTypes.STRING
-      // allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     avatar_url: {
-      type: DataTypes.STRING
-      // allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     html_url: {
-      type: DataTypes.STRING
-      // allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     name: {
-      type: DataTypes.STRING
-      // allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     company: {
-      type: DataTypes.STRING
-      // allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true
     },
     location: {
-      type: DataTypes.STRING
-      // allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true
     },
     email: {
-      type: DataTypes.STRING
-      // allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true
     },
     bio: {
-      type: DataTypes.TEXT
-      // allowNull: true
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     followers: {
-      type: DataTypes.INTEGER
-      // allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     following: {
-      type: DataTypes.INTEGER
-      // allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     public_repos: {
-      type: DataTypes.INTEGER
-      // allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   },
   {
