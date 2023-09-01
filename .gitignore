@@ -1,0 +1,43 @@
+./Express-API-Hitter/node_modules
+./Express-API-Hitter/.env
+./GitHub-Users-Explorer/node_modules
+
+# Compiled output
+./GitHub-Users-Explorer/dist
+./GitHub-Users-Explorer/tmp
+./GitHub-Users-Explorer/out-tsc
+./GitHub-Users-Explorer/bazel-out
+
+# Node
+./GitHub-Users-Explorer/npm-debug.log
+./GitHub-Users-Explorer/yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+# .vscode/*
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+# .history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+./GitHub-Users-Explorer/.DS_Store
+./GitHub-Users-Explorer/Thumbs.db

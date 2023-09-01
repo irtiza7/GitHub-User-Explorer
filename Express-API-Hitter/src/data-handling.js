@@ -8,6 +8,14 @@ const extractUserFields = function (response) {
   return usersDataList
 }
 
+const extractFollowerFields = function (response) {
+  const followers = response.data
+  const followersDataList = followers.map(({ id, login, avatar_url }) => {
+    return { id, login, avatar_url }
+  })
+  return followersDataList
+}
+
 const extractUserDetailsFields = function (response) {
   const userDetails = response.data
   const { id, login, avatar_url, html_url, name, company, location, email, bio, followers, following, public_repos } = userDetails
@@ -44,6 +52,7 @@ const saveReposInDB = async function (repos) {
 
 module.exports = {
   extractUserFields,
+  extractFollowerFields,
   extractRepoFields,
   extractUserDetailsFields,
   mergeUserDetailsAndRepos,
